@@ -3,7 +3,6 @@ package com.aljoschazoeller.java.hhjava242_408_restclient.rickmortyapi;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.*;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -125,6 +124,87 @@ public class RickMortyCharacterControllerIntegrationTest {
                                 "id": 2,
                                 "name": "Morty Smith",
                                 "species": "Human"
+                            }
+                        ]
+                        """));
+    }
+
+    @Test
+    void getFilteredCharactersIntegrationTest_WhenDeadAlienFemale_Return2Characters() throws Exception {
+        mockWebServer.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .setBody("""
+                        {
+                            "info": {
+                                "count": 2,
+                                "pages": 1,
+                                "next": null,
+                                "prev": null
+                            },
+                            "results": [
+                                {
+                                    "id": 32,
+                                    "name": "Bearded Lady",
+                                    "status": "Dead",
+                                    "species": "Alien",
+                                    "type": "Parasite",
+                                    "gender": "Female",
+                                    "origin": {
+                                        "name": "unknown",
+                                        "url": ""
+                                    },
+                                    "location": {
+                                        "name": "Earth (Replacement Dimension)",
+                                        "url": "https://rickandmortyapi.com/api/location/20"
+                                    },
+                                    "image": "https://rickandmortyapi.com/api/character/avatar/32.jpeg",
+                                    "episode": [
+                                        "https://rickandmortyapi.com/api/episode/15"
+                                    ],
+                                    "url": "https://rickandmortyapi.com/api/character/32",
+                                    "created": "2017-11-05T09:18:04.184Z"
+                                },
+                                {
+                                    "id": 87,
+                                    "name": "Cynthia",
+                                    "status": "Dead",
+                                    "species": "Alien",
+                                    "type": "Zigerion",
+                                    "gender": "Female",
+                                    "origin": {
+                                        "name": "unknown",
+                                        "url": ""
+                                    },
+                                    "location": {
+                                        "name": "Zigerion's Base",
+                                        "url": "https://rickandmortyapi.com/api/location/46"
+                                    },
+                                    "image": "https://rickandmortyapi.com/api/character/avatar/87.jpeg",
+                                    "episode": [
+                                        "https://rickandmortyapi.com/api/episode/4"
+                                    ],
+                                    "url": "https://rickandmortyapi.com/api/character/87",
+                                    "created": "2017-11-30T21:08:32.534Z"
+                                }
+                            ]
+                        }
+                        """));
+
+        //WHEN
+        mockMvc.perform((get("/api/characters?gender=Female&status=Dead&species=Alien")))
+                .andExpect(status().is(200))
+                .andExpect(content().json("""
+                        [
+                            {
+                                "id": 32,
+                                "name": "Bearded Lady",
+                                "species": "Alien"
+                            },
+                            {
+                                "id": 87,
+                                "name": "Cynthia",
+                                "species": "Alien"
                             }
                         ]
                         """));
