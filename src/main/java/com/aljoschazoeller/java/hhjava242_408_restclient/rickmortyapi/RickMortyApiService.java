@@ -2,6 +2,7 @@ package com.aljoschazoeller.java.hhjava242_408_restclient.rickmortyapi;
 
 import com.aljoschazoeller.java.hhjava242_408_restclient.rickmortyapi.domain.RickMortyApiCharacter;
 import com.aljoschazoeller.java.hhjava242_408_restclient.rickmortyapi.domain.RickMortyApiResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriBuilder;
@@ -12,9 +13,9 @@ import java.util.Map;
 public class RickMortyApiService {
     private final RestClient restClient;
 
-    public RickMortyApiService() {
+    public RickMortyApiService(@Value("${rickmortyapi.base-url}") String url) {
         this.restClient = RestClient.builder()
-                .baseUrl("https://rickandmortyapi.com/api")
+                .baseUrl(url)
                 .build();
     }
 
