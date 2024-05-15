@@ -31,7 +31,6 @@ public class RickMortyCharacterController {
 
     @GetMapping("/species-statistic")
     public int getSpeciesStatistic(@RequestParam String species) {
-        System.out.println("test: " + species);
         Map<String, String> filterVariable = Map.of("species", species);
         return rickMortyApiService.loadFilteredCharacters(filterVariable).info().count();
     }
