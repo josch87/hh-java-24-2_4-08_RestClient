@@ -1,12 +1,10 @@
 package com.aljoschazoeller.java.hhjava242_408_restclient.rickmortyapi;
 
 import com.aljoschazoeller.java.hhjava242_408_restclient.rickmortyapi.domain.RickMortyApiCharacter;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/characters")
@@ -19,8 +17,11 @@ public class RickMortyCharacterController {
     }
 
     @GetMapping
-    public List<RickMortyApiCharacter> getAllCharacters() {
-        return rickMortyApiService.loadAllCharacters().results();
+    public List<RickMortyApiCharacter> getAllFilteredCharacters(@RequestParam Map<String, String> parameters) {
+        if (parameters.isEmpty()) {
+            return rickMortyApiService.loadAllCharacters().results();
+        }
+        return rickMortyApiService.loadFilteredCharacters(parameters).results();
     }
 
     @GetMapping("{id}")
