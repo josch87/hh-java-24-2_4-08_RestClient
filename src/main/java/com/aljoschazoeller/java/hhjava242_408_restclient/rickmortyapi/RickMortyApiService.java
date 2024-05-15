@@ -1,5 +1,6 @@
 package com.aljoschazoeller.java.hhjava242_408_restclient.rickmortyapi;
 
+import com.aljoschazoeller.java.hhjava242_408_restclient.rickmortyapi.domain.RickMortyApiCharacter;
 import com.aljoschazoeller.java.hhjava242_408_restclient.rickmortyapi.domain.RickMortyApiResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -15,10 +16,16 @@ public class RickMortyApiService {
     }
 
     public RickMortyApiResponse loadAllCharacters() {
-
         return restClient.get()
                 .uri("/character")
                 .retrieve()
                 .body(RickMortyApiResponse.class);
+    }
+
+    public RickMortyApiCharacter loadSingleCharacterById(int id) {
+        return restClient.get()
+                .uri(("/character/" + id))
+                .retrieve()
+                .body(RickMortyApiCharacter.class);
     }
 }
