@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/characters")
+@RequestMapping("/api")
 public class RickMortyCharacterController {
 
     private final RickMortyApiService rickMortyApiService;
@@ -16,7 +16,7 @@ public class RickMortyCharacterController {
         this.rickMortyApiService = rickMortyApiService;
     }
 
-    @GetMapping
+    @GetMapping("/characters")
     public List<RickMortyApiCharacter> getAllFilteredCharacters(@RequestParam Map<String, String> parameters) {
         if (parameters.isEmpty()) {
             return rickMortyApiService.loadAllCharacters().results();
@@ -24,8 +24,15 @@ public class RickMortyCharacterController {
         return rickMortyApiService.loadFilteredCharacters(parameters).results();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/characters/{id}")
     public RickMortyApiCharacter getCharacterById(@PathVariable int id) {
         return rickMortyApiService.loadSingleCharacterById(id);
+    }
+
+    @GetMapping("/species-statistic")
+    public int getSpeciesStatistic(@RequestParam String species) {
+        System.out.println("test: " + species);
+        Map<String, String> filterVariable = Map.of("species", species);
+        return rickMortyApiService.loadFilteredCharacters(filterVariable).info().count();
     }
 }
