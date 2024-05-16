@@ -17,7 +17,7 @@ public class RickMortyCharacterController {
     }
 
     @GetMapping("/characters")
-    public List<RickMortyApiCharacter> getAllFilteredCharacters(@RequestParam Map<String, String> parameters) {
+    public List<RickMortyApiCharacter> getAllCharacters(@RequestParam Map<String, String> parameters) {
         if (parameters.isEmpty()) {
             return rickMortyApiService.loadAllCharacters().results();
         }
